@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">
+  <rect width="200" height="300" fill="#e3e3e3"/>
+  <path d="M55,60 L55,200 Q55,215 60,220 L90,280 L100,280 L110,280 L140,220 Q145,215 145,200 L145,60 Z" fill="none" stroke="#c0c0c0" stroke-width="2"/>
+  <line x1="55" y1="120" x2="145" y2="120" stroke="#c0c0c0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="100" y="300" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10" fill="#b5b5b5">Bottom</text>
+  <text x="100" y="270" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="9" fill="#bbb">Back</text>
+</svg>

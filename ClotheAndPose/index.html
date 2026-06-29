@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://localhost:59537/#access -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clothe and Pose Benchmark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #111;
+      line-height: 1.75;
+      padding: 64px 24px 80px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    /* ── Typography ─────────────────────────────────────── */
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 500;
+      text-align: center;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.85rem;
+      font-weight: 500;
+      margin: 64px 0 22px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #555;
+      margin: 32px 0 12px;
+    }
+    p { color: #333; font-size: 0.95rem; }
+    em { font-style: italic; }
+    sub, sup { font-size: 0.75em; }
+
+    /* ── Header ─────────────────────────────────────────── */
+    .header-meta { text-align: center; margin-bottom: 64px; }
+    .authors { font-size: 1.05rem; margin-bottom: 4px; }
+    .authors a {
+      color: #333;
+      text-decoration: none;
+      text-decoration: underline;
+    }
+    .authors a:hover {
+      color: #111;
+      text-decoration: underline;
+    }
+    .affiliation { font-size: 0.9rem; color: #888; font-weight: 300; margin-bottom: 20px; }
+    .header-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .header-links a {
+      text-decoration: none;
+      color: #333;
+      font-size: 0.85rem;
+      border: 1px solid #ccc;
+      padding: 5px 18px;
+      letter-spacing: 0.04em;
+      transition: background 0.15s;
+    }
+    .header-links a:hover { background: #f5f5f5; }
+
+
+    /* ── Triplet diagram (in "Why" section) ────────────── */
+    .triplet-diagram {
+      display: flex;
+      gap: 14px;
+      align-items: flex-end;
+      max-width: 560px;
+      margin: 28px auto;
+    }
+    .td-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .td-box {
+      width: 100%;
+      aspect-ratio: 2/3;
+      background: #f5f5f5;
+      border: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #aaa;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .td-box.garments {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3px;
+    }
+    .td-box.garments div {
+      background: #eee;
+      border: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: #bbb;
+    }
+    .td-label { font-size: 0.78rem; color: #888; text-align: center; }
+    .td-op { font-size: 1.4rem; color: #bbb; align-self: center; padding-bottom: 28px; }
+
+    /* ── Pose configurations grid ───────────────────────── */
+    .pose-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+    @media (max-width: 640px) { .pose-grid { grid-template-columns: repeat(2, 1fr); } }
+    .pose-card {
+      border: 1px solid #e0e0e0;
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .pose-icon {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
+    }
+    .pose-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 6px; }
+    .pose-desc { font-size: 0.78rem; color: #888; line-height: 1.5; }
+
+    /* ── Dataset statistics ─────────────────────────────── */
+    .stats-row {
+      display: flex;
+      gap: 0;
+      margin: 28px 0;
+      border: 1px solid #e5e5e5;
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 20px 12px;
+      border-right: 1px solid #e5e5e5;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 5px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    /* ── Garment bar chart ──────────────────────────────── */
+    .garment-chart { margin: 16px 0 8px; }
+    .g-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+    .g-name { font-size: 0.83rem; color: #444; width: 148px; flex-shrink: 0; }
+    .g-track { flex: 1; height: 14px; background: #f0f0f0; }
+    .g-bar { height: 100%; background: #111; }
+    .g-pct { font-size: 0.78rem; color: #999; width: 36px; text-align: right; flex-shrink: 0; }
+
+    /* ── Montage collage canvases (square center-out scatter) ─ */
+    .montage-scroll {
+      margin: 0 0 8px;
+      padding: 20px 0 12px;
+      text-align: center;
+    }
+
+    /* Square 1:1 collage: scale to the column width, capped so it never
+       grows taller than the viewport. Aspect ratio matches the 1200x1200
+       canvas so the box reserves height before the image loads. The neutral
+       gradient wash is baked into the WebP; this matching CSS background is
+       a fallback that shows through the rounded corners. */
+    .montage-strip {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: 88vh;
+      object-fit: contain;
+      margin: 0 auto;
+      border-radius: 10px;
+      background: radial-gradient(120% 90% at 50% 0%, #faf9f7 0%, #e9e7e2 100%);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.06);
+    }
+    @media (max-width: 560px) {
+      .montage-strip { max-width: 100%; }
+    }
+
+    /* ── Gallery: tabs ──────────────────────────────────── */
+    .gallery-tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin-top: 28px;
+      margin-bottom: 0;
+      gap: 0;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 9px 22px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #888;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .tab-btn:hover { color: #333; }
+    .tab-btn.active { color: #111; border-bottom-color: #111; font-weight: 500; }
+
+    /* ── Gallery: tab panels & carousel ────────────────── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .carousel-wrap {
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      padding: 28px 0 0;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .triplet-slide {
+      min-width: 100%;
+      padding: 0 0 4px;
+    }
+
+    /* ── Triplet card ───────────────────────────────────── */
+    .triplet-card {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .tc-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .tc-img-wrap {
+      width: 100%;
+      aspect-ratio: 2/3;
+      overflow: hidden;
+      background: #f0f0f0;
+      border: 1px solid #e8e8e8;
+    }
+    .tc-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .garment-grid {
+      width: 100%;
+      aspect-ratio: 2/3;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 4px;
+    }
+    /* top-only outfits: single row of two cells */
+    .garment-grid.no-bottom {
+      aspect-ratio: 4/3;
+      grid-template-rows: 1fr;
+    }
+    .garment-grid .g-cell {
+      overflow: hidden;
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .garment-grid .g-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 5px;
+      display: block;
+    }
+    .garment-sublabels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      width: 100%;
+      margin-top: -4px;
+    }
+    .garment-sublabels span {
+      font-size: 0.68rem;
+      color: #bbb;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+    .tc-label {
+      font-size: 0.8rem;
+      color: #999;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .tc-label strong { color: #555; font-weight: 500; }
+
+    /* ── Carousel navigation ────────────────────────────── */
+    .carousel-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .nav-btn {
+      background: #fff;
+      border: 1px solid #ccc;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      line-height: 1;
+    }
+    .nav-btn:hover { background: #f5f5f5; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .slide-counter { font-size: 0.8rem; color: #aaa; min-width: 40px; text-align: center; }
+
+    /* ── Metrics ────────────────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+    @media (max-width: 600px) { .metrics-grid { grid-template-columns: 1fr; } }
+    .metric-card { border: 1px solid #e5e5e5; padding: 20px 20px 18px; }
+    .metric-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .metric-dir {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    .metric-card p { font-size: 0.85rem; color: #666; line-height: 1.6; }
+
+    /* ── Access section ─────────────────────────────────── */
+    .access-box {
+      border: 1px solid #ddd;
+      padding: 28px 32px;
+      margin: 24px 0;
+    }
+    .access-box p { margin-bottom: 10px; }
+    .access-box a { color: #111; font-weight: 500; }
+    .access-note {
+      font-size: 0.82rem;
+      color: #999;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ── Citation ───────────────────────────────────────── */
+    .citation-wrap {
+      position: relative;
+      margin: 24px 0;
+    }
+    .citation-block {
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      padding: 20px 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.81rem;
+      line-height: 1.85;
+      white-space: pre;
+      overflow-x: auto;
+      color: #444;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 4px 12px;
+      font-size: 0.73rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      color: #666;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: #f5f5f5; }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid #eee;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1305.0" data-gr-ext-installed="">
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header>
+  <h1>Clothe and Pose Benchmark</h1>
+  <div class="header-meta">
+    <p class="authors"><a href="http://localhost:59537/0xnakul.github.io">Nakul Sharma</a> &nbsp;·&nbsp; <a href="https://aayushbansal.xyz/">Aayush Bansal</a> &nbsp;·&nbsp; <a href="https://minhpvo.github.io/">Minh Vo</a></p>
+    <div class="header-links">
+      <!-- TODO: replace href="#" with paper PDF link once available -->
+      <a href="http://localhost:59537/#">Paper</a>
+      <!-- TODO: replace href="#" with arXiv link once available -->
+      <!-- <a href="#">arXiv <span style="color:#aaa;">(coming soon)</span></a> -->
+      <a href="http://localhost:59537/#access">Dataset</a>
+      <a href="http://localhost:59537/#citation">BibTeX</a>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════ WHY ══════════════════════════ -->
+<section id="why">
+  <h2>Why a New Benchmark?</h2>
+  <p>
+    Existing virtual try-on benchmarks evaluate models by masking the garment region
+    on a person already wearing that garment, and asking the model to reconstruct it.
+    This induces an <em>input dependency bias</em> — models learn to copy appearance
+    from the reference image rather than the provided garment. No benchmark supports
+    evaluating the practical scenario where the person wears a <em>different</em> garment,
+    or adopts a different <em>pose</em>.
+  </p>
+
+  <img src="images/fig3_cnp_ab.png" style="width:60%; margin: 24px auto; display:block;">
+
+  <h3>Evaluation Triplet</h3>
+  <p>Each entry in our dataset is a triplet of (input person, target garment images, ground truth). The same person physically wears G<sub>B</sub> at a target pose to produce the ground truth — no synthetic compositing.</p>
+
+  <img src="images/fig3_cnp_c.png" style="width:30%; margin: 0 auto; display:block;">
+</section>
+
+
+<!-- ═══════════════════════ POSE CONFIGS ═════════════════ -->
+<section id="poses">
+  <h2>Pose Configurations</h2>
+  <p>
+    We evaluate across four pose configurations defined by the orientation of the target torso:
+    front, left, right, and back. Pose labels are assigned based on where the majority of the body
+    points — a person can have their head turned the other way and still fall into a given category.
+    This reflects how poses naturally vary in the wild, rather than enforcing exact rotation angles.
+  </p>
+  <div class="pose-grid">
+    <div class="pose-card">
+      <div class="pose-icon">Front → Front</div>
+      <div class="pose-desc">Both input and target have the torso roughly facing the camera (within ±45°). Isolates garment transfer with minimal pose variation.</div>
+    </div>
+    <div class="pose-card">
+      <div class="pose-icon">Front → Left</div>
+      <div class="pose-desc">Target torso points left (roughly 45°–135°). Pose is assigned by majority body orientation — the head may still face the camera.</div>
+    </div>
+    <div class="pose-card">
+      <div class="pose-icon">Front → Right</div>
+      <div class="pose-desc">Target torso points right (roughly 45°–135°). Symmetric counterpart to Front → Left, with the same orientation conventions.</div>
+    </div>
+    <div class="pose-card">
+      <div class="pose-icon">Front → Back</div>
+      <div class="pose-desc">Target torso faces away (roughly 135°–225° from the camera). The head may still be visible while the body points back.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ STATISTICS ══════════════════ -->
+<section id="stats">
+  <h2>Dataset Statistics</h2>
+
+  <div class="stats-row">
+    <div class="stat-item">
+      <span class="stat-num">2</span>
+      <span class="stat-label">Tasks</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">4</span>
+      <span class="stat-label">Pose configs per task</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">600</span>
+      <span class="stat-label">Evaluation Triplets per config</span>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-item">
+      <span class="stat-num">8</span>
+      <span class="stat-label">Garment categories</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">360</span>
+      <span class="stat-label">Unique Garments</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">39</span>
+      <span class="stat-label">Diverse User Identities</span>
+    </div>
+    
+  </div>
+
+  <h3>Garment Distribution</h3>
+  <p style="margin-bottom:16px;">Coverage spans everyday and challenging garment types, with deliberate inclusion of innerwear and swimwear which expose more skin and are harder for current methods.</p>
+  <div class="garment-chart" id="garment-chart">
+    <div class="g-row">
+      <span class="g-name">Long Sleeve Top</span>
+      <div class="g-track"><div class="g-bar" style="width:84.8%"></div></div>
+      <span class="g-pct">21.2%</span>
+    </div>
+  
+    <div class="g-row">
+      <span class="g-name">Innerwear Bottom</span>
+      <div class="g-track"><div class="g-bar" style="width:64%"></div></div>
+      <span class="g-pct">16%</span>
+    </div>
+  
+    <div class="g-row">
+      <span class="g-name">Short Sleeve Top</span>
+      <div class="g-track"><div class="g-bar" style="width:55.2%"></div></div>
+      <span class="g-pct">13.8%</span>
+    </div>
+  
+    <div class="g-row">
+      <span class="g-name">Innerwear Top</span>
+      <div class="g-track"><div class="g-bar" style="width:47.6%"></div></div>
+      <span class="g-pct">11.9%</span>
+    </div>
+  
+    <div class="g-row">
+      <span class="g-name">Sleeveless Top</span>
+      <div class="g-track"><div class="g-bar" style="width:44.8%"></div></div>
+      <span class="g-pct">11.2%</span>
+    </div>
+  
+    <div class="g-row">
+      <span class="g-name">Dress</span>
+      <div class="g-track"><div class="g-bar" style="width:42%"></div></div>
+      <span class="g-pct">10.5%</span>
+    </div>
+  
+    <div class="g-row">
+      <span class="g-name">Swimwear</span>
+      <div class="g-track"><div class="g-bar" style="width:40%"></div></div>
+      <span class="g-pct">10%</span>
+    </div>
+  
+    <div class="g-row">
+      <span class="g-name">Skirt</span>
+      <div class="g-track"><div class="g-bar" style="width:16%"></div></div>
+      <span class="g-pct">4%</span>
+    </div>
+  
+    <div class="g-row">
+      <span class="g-name">Other</span>
+      <div class="g-track"><div class="g-bar" style="width:5.6%"></div></div>
+      <span class="g-pct">1.4%</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ GARMENT MONTAGES ══════════════════════ -->
+<section id="garment-montages">
+  <h2>Garments at a Glance</h2>
+  <p>Browse a randomized collage of garments from each category.</p>
+
+  <div class="gallery-tabs" id="garment-montage-tabs">
+    <button class="tab-btn active" onclick="switchTab('garment-montage', 'long-sleeve', this)">Long Sleeve</button>
+    <button class="tab-btn" onclick="switchTab('garment-montage', 'short-sleeve', this)">Short Sleeve</button>
+    <button class="tab-btn" onclick="switchTab('garment-montage', 'sleeveless', this)">Sleeveless</button>
+    <button class="tab-btn" onclick="switchTab('garment-montage', 'dress', this)">Dress</button>
+    <button class="tab-btn" onclick="switchTab('garment-montage', 'innerwear-top', this)">Innerwear Top</button>
+    <button class="tab-btn" onclick="switchTab('garment-montage', 'innerwear-bot', this)">Innerwear Bot</button>
+    <button class="tab-btn" onclick="switchTab('garment-montage', 'swimwear', this)">Swimwear</button>
+    <button class="tab-btn" onclick="switchTab('garment-montage', 'skirt', this)">Skirt</button>
+    <button class="tab-btn" onclick="switchTab('garment-montage', 'pants', this)">Pants</button>
+  </div>
+
+  <div class="tab-panel active" id="garment-montage-long-sleeve">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_lslv.webp" alt="Long-sleeve top cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="garment-montage-short-sleeve">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_sslv.webp" alt="Short-sleeve top cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="garment-montage-sleeveless">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_slvls.webp" alt="Sleeveless top cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="garment-montage-dress">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_dress.webp" alt="Dress cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="garment-montage-innerwear-top">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_innerwear_top.webp" alt="Innerwear top cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="garment-montage-innerwear-bot">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_innerwear_bottom.webp" alt="Innerwear bottom cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="garment-montage-swimwear">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_swimwear.webp" alt="Swimwear cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="garment-montage-skirt">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_skirts.webp" alt="Skirt cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="garment-montage-pants">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_pants.webp" alt="Pants cutouts from the dataset" loading="lazy" decoding="async"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ HUMAN MONTAGES ═══════════════════════ -->
+<section id="human-montages">
+  <h2>Humans at a Glance</h2>
+  <p>Randomized collages of human subjects across the four pose orientations.</p>
+
+  <div class="gallery-tabs" id="human-montage-tabs">
+    <button class="tab-btn active" onclick="switchTab('human-montage', 'front', this)">Front</button>
+    <button class="tab-btn" onclick="switchTab('human-montage', 'left', this)">Left</button>
+    <button class="tab-btn" onclick="switchTab('human-montage', 'right', this)">Right</button>
+    <button class="tab-btn" onclick="switchTab('human-montage', 'back', this)">Back</button>
+  </div>
+
+  <div class="tab-panel active" id="human-montage-front">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/humans_front.webp" alt="Human subjects in front-facing poses" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="human-montage-left">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/humans_left.webp" alt="Human subjects in left-facing poses" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="human-montage-right">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/humans_right.webp" alt="Human subjects in right-facing poses" loading="lazy" decoding="async"></div>
+  </div>
+  <div class="tab-panel" id="human-montage-back">
+    <div class="montage-scroll"><img class="montage-strip" src="images/montages/humans_back.webp" alt="Human subjects in back-facing poses" loading="lazy" decoding="async"></div>
+  </div>
+</section>
+
+
+<!-- ═════════════════ CNP GALLERY ════════════════════════ -->
+<section id="cnp-gallery">
+  <h2>Dataset Samples — Clothe and Pose</h2>
+  <p>
+    Each triplet shows: <strong>input person</strong> (wearing G<sub>A</sub>),
+    <strong>target garment G<sub>B</sub></strong> (top front, top back, bottom front, bottom back),
+    and the <strong>ground truth</strong> — the same person physically wearing G<sub>B</sub> at the target pose.
+    Browse by pose configuration.
+  </p>
+
+  <div class="gallery-tabs" id="cnp-tabs">
+    <button class="tab-btn active" onclick="switchTab('cnp', 'ff', this)">Front → Front</button>
+    <button class="tab-btn" onclick="switchTab('cnp', 'fl', this)">Front → Left</button>
+    <button class="tab-btn" onclick="switchTab('cnp', 'fr', this)">Front → Right</button>
+    <button class="tab-btn" onclick="switchTab('cnp', 'fb', this)">Front → Back</button>
+  </div>
+
+  <div class="tab-panel active" id="cnp-ff">
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="cnp-ff-track" style="transform: translateX(0px);"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="navSlide('cnp-ff', -1)">‹</button>
+      <span class="slide-counter" id="cnp-ff-ctr">1 / 6</span>
+      <button class="nav-btn" onclick="navSlide('cnp-ff', 1)">›</button>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="cnp-fl">
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="cnp-fl-track" style="transform: translateX(0px);"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="navSlide('cnp-fl', -1)">‹</button>
+      <span class="slide-counter" id="cnp-fl-ctr">1 / 6</span>
+      <button class="nav-btn" onclick="navSlide('cnp-fl', 1)">›</button>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="cnp-fr">
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="cnp-fr-track" style="transform: translateX(0px);"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="navSlide('cnp-fr', -1)">‹</button>
+      <span class="slide-counter" id="cnp-fr-ctr">1 / 6</span>
+      <button class="nav-btn" onclick="navSlide('cnp-fr', 1)">›</button>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="cnp-fb">
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="cnp-fb-track" style="transform: translateX(0px);"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="navSlide('cnp-fb', -1)">‹</button>
+      <span class="slide-counter" id="cnp-fb-ctr">1 / 6</span>
+      <button class="nav-btn" onclick="navSlide('cnp-fb', 1)">›</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════ REPOSING GALLERY ════════════════════ -->
+<section id="repose-gallery">
+  <h2>Dataset Samples — Reposing</h2>
+  <p>
+    The same dataset supports evaluating <strong>reposing</strong> in isolation:
+    given the input person (and optionally their garment views), generate the person
+    in a new target pose while preserving identity and garment faithfully.
+    The garment columns show the front and back views available as optional conditioning.
+  </p>
+
+  <div class="gallery-tabs" id="repose-tabs">
+    <button class="tab-btn active" onclick="switchTab('repose', 'ff', this)">Front → Front</button>
+    <button class="tab-btn" onclick="switchTab('repose', 'fl', this)">Front → Left</button>
+    <button class="tab-btn" onclick="switchTab('repose', 'fr', this)">Front → Right</button>
+    <button class="tab-btn" onclick="switchTab('repose', 'fb', this)">Front → Back</button>
+  </div>
+
+  <div class="tab-panel active" id="repose-ff">
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="repose-ff-track" style="transform: translateX(0px);"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="navSlide('repose-ff', -1)">‹</button>
+      <span class="slide-counter" id="repose-ff-ctr">1 / 6</span>
+      <button class="nav-btn" onclick="navSlide('repose-ff', 1)">›</button>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="repose-fl">
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="repose-fl-track" style="transform: translateX(0px);"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="navSlide('repose-fl', -1)">‹</button>
+      <span class="slide-counter" id="repose-fl-ctr">1 / 6</span>
+      <button class="nav-btn" onclick="navSlide('repose-fl', 1)">›</button>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="repose-fr">
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="repose-fr-track" style="transform: translateX(0px);"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="navSlide('repose-fr', -1)">‹</button>
+      <span class="slide-counter" id="repose-fr-ctr">1 / 6</span>
+      <button class="nav-btn" onclick="navSlide('repose-fr', 1)">›</button>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="repose-fb">
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="repose-fb-track" style="transform: translateX(0px);"></div>
+    </div>
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="navSlide('repose-fb', -1)">‹</button>
+      <span class="slide-counter" id="repose-fb-ctr">1 / 6</span>
+      <button class="nav-btn" onclick="navSlide('repose-fb', 1)">›</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ METRICS ═══════════════════════════ -->
+<section id="metrics">
+  <h2>Evaluation Metrics</h2>
+  <p>
+    Because our dataset provides <em>real</em> ground truth images, we can apply
+    full-reference metrics that are unavailable in existing VTON benchmarks.
+  </p>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-name">LPIPS</div>
+      <div class="metric-dir">Lower is better</div>
+      <p>Learned Perceptual Image Patch Similarity. Measures perceptual similarity using deep features; correlates better with human judgement than pixel metrics.</p>
+    </div>
+    <div class="metric-card">
+      <div class="metric-name">PSNR</div>
+      <div class="metric-dir">Higher is better</div>
+      <p>Peak Signal-to-Noise Ratio. A pixel-level fidelity measure. Provides a complementary signal to perceptual metrics.</p>
+    </div>
+    <div class="metric-card">
+      <div class="metric-name">SSIM</div>
+      <div class="metric-dir">Higher is better</div>
+      <p>Structural Similarity Index. Captures luminance, contrast, and structure differences between generated and ground truth images.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════ ACCESS ══════════════════════════ -->
+<section id="access">
+  <h2>How to Access</h2>
+  <div class="access-box">
+    <p>
+      The Clothe and Pose evaluation dataset is available for research use.
+      To request access, please email
+      <a href="mailto:placeholder@email.com">placeholder@email.com</a>
+      with your name, institution, and intended use.
+    </p>
+    <p>
+      Upon approval, you will receive a download link along with a data use agreement.
+      The dataset is provided for non-commercial research purposes only.
+    </p>
+    <p>
+      Documentation:
+      <a href="http://localhost:59537/DATASHEET_readme.md">README</a>
+    </p>
+    <p class="access-note">
+      Please allow a few business days for access requests to be processed.
+    </p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ CITATION ═════════════════════════ -->
+<section id="citation">
+  <h2>Citation</h2>
+  <div class="citation-wrap">
+    <!-- TODO: update booktitle to CVPR proceedings once acceptance is confirmed; currently a neutral preprint citation -->
+    <pre class="citation-block" id="bibtex">@InProceedings{sharma2025clothepose,
+  title     = {Clothe and Pose},
+  author    = {Sharma, Nakul and Bansal, Aayush and Vo, Minh},
+  booktitle = {CVPR},
+  year      = {2025}
+}</pre>
+    <button class="copy-btn" onclick="copyBibtex()">Copy</button>
+  </div>
+</section>
+
+
+<footer>
+  Clothe and Pose Benchmark &nbsp;·&nbsp; 2025
+</footer>
+
+
+<!-- ══════════════════════ SCRIPTS ════════════════════════ -->
+<script>
+/* ── Garment distribution chart ─────────────────────── */
+const garments = [
+  { name: 'Long Sleeve Top',   pct: 21.2 },
+  { name: 'Innerwear Bottom',  pct: 16.0 },
+  { name: 'Short Sleeve Top',  pct: 13.8 },
+  { name: 'Innerwear Top',     pct: 11.9 },
+  { name: 'Sleeveless Top',    pct: 11.2 },
+  { name: 'Dress',             pct: 10.5 },
+  { name: 'Swimwear',          pct: 10.0 },
+  { name: 'Skirt',             pct:  4.0 },
+  { name: 'Other',             pct:  1.4 },
+];
+
+const chartEl = document.getElementById('garment-chart');
+garments.forEach(g => {
+  chartEl.insertAdjacentHTML('beforeend', `
+    <div class="g-row">
+      <span class="g-name">${g.name}</span>
+      <div class="g-track"><div class="g-bar" style="width:${g.pct / 25 * 100}%"></div></div>
+      <span class="g-pct">${g.pct}%</span>
+    </div>
+  `);
+});
+
+/* ── Gallery data ────────────────────────────────────── */
+/*
+  Real triplet data is inlined below as GALLERY_DATA (no runtime fetch).
+  Each sample has shape:
+    { input: str, target: str, garments: [topF, topB, botF, botB] }
+  where any garment entry may be null (rendered with an SVG fallback).
+  To regenerate the data + images: python3 build_triplets.py
+*/
+/* SVG placeholders retained only as graceful fallbacks when a real
+   image is missing (e.g. a null garment cell or a failed fetch). */
+const PH_PERSON  = 'images/ph_person.svg';
+const PH_TARGET  = 'images/ph_target.svg';
+const PH_GARMENTS = [
+  'images/ph_top_f.svg',
+  'images/ph_top_b.svg',
+  'images/ph_bot_f.svg',
+  'images/ph_bot_b.svg',
+];
+
+function makePlaceholderSamples(n) {
+  return Array.from({ length: n }, () => ({
+    input:    PH_PERSON,
+    garments: [...PH_GARMENTS],
+    target:   PH_TARGET,
+  }));
+}
+
+/* Fallback data used only if gallery_data.json fails to load. */
+const fallbackData = {
+  cnp:    { ff: makePlaceholderSamples(3), fl: makePlaceholderSamples(3), fr: makePlaceholderSamples(3), fb: makePlaceholderSamples(3) },
+  repose: { ff: makePlaceholderSamples(3), fl: makePlaceholderSamples(3), fr: makePlaceholderSamples(3), fb: makePlaceholderSamples(3) },
+};
+
+/* Triplet data, inlined so the page is fully static (no fetch / no server
+   needed — works from file:// or any static host like GitHub Pages).
+   To regenerate: run build_triplets.py and paste its gallery_data.json here. */
+const GALLERY_DATA = {
+ "cnp": {
+  "ff": [
+   {"input": "images/cnp/ff/1_input.jpg", "target": "images/cnp/ff/1_gt.jpg", "garments": ["images/cnp/ff/1_top_f.png", "images/cnp/ff/1_top_b.png", "images/cnp/ff/1_bot_f.png", "images/cnp/ff/1_bot_b.png"]},
+   {"input": "images/cnp/ff/2_input.jpg", "target": "images/cnp/ff/2_gt.jpg", "garments": ["images/cnp/ff/2_top_f.png", "images/cnp/ff/2_top_b.png", "images/cnp/ff/2_bot_f.png", "images/cnp/ff/2_bot_b.png"]},
+   {"input": "images/cnp/ff/3_input.jpg", "target": "images/cnp/ff/3_gt.jpg", "garments": ["images/cnp/ff/3_top_f.png", "images/cnp/ff/3_top_b.png", "images/cnp/ff/3_bot_f.png", "images/cnp/ff/3_bot_b.png"]}
+  ],
+  "fl": [
+   {"input": "images/cnp/fl/1_input.jpg", "target": "images/cnp/fl/1_gt.jpg", "garments": ["images/cnp/fl/1_top_f.png", "images/cnp/fl/1_top_b.png", "images/cnp/fl/1_bot_f.png", "images/cnp/fl/1_bot_b.png"]},
+   {"input": "images/cnp/fl/2_input.jpg", "target": "images/cnp/fl/2_gt.jpg", "garments": ["images/cnp/fl/2_top_f.png", "images/cnp/fl/2_top_b.png", null, null]},
+   {"input": "images/cnp/fl/3_input.jpg", "target": "images/cnp/fl/3_gt.jpg", "garments": ["images/cnp/fl/3_top_f.png", "images/cnp/fl/3_top_b.png", null, null]}
+  ],
+  "fr": [
+   {"input": "images/cnp/fr/1_input.jpg", "target": "images/cnp/fr/1_gt.jpg", "garments": ["images/cnp/fr/1_top_f.png", "images/cnp/fr/1_top_b.png", "images/cnp/fr/1_bot_f.png", "images/cnp/fr/1_bot_b.png"]},
+   {"input": "images/cnp/fr/2_input.jpg", "target": "images/cnp/fr/2_gt.jpg", "garments": ["images/cnp/fr/2_top_f.png", "images/cnp/fr/2_top_b.png", null, null]},
+   {"input": "images/cnp/fr/3_input.jpg", "target": "images/cnp/fr/3_gt.jpg", "garments": ["images/cnp/fr/3_top_f.png", "images/cnp/fr/3_top_b.png", null, null]}
+  ],
+  "fb": [
+   {"input": "images/cnp/fb/1_input.jpg", "target": "images/cnp/fb/1_gt.jpg", "garments": ["images/cnp/fb/1_top_f.png", "images/cnp/fb/1_top_b.png", "images/cnp/fb/1_bot_f.png", "images/cnp/fb/1_bot_b.png"]},
+   {"input": "images/cnp/fb/2_input.jpg", "target": "images/cnp/fb/2_gt.jpg", "garments": ["images/cnp/fb/2_top_f.png", "images/cnp/fb/2_top_b.png", "images/cnp/fb/2_bot_f.png", "images/cnp/fb/2_bot_b.png"]},
+   {"input": "images/cnp/fb/3_input.jpg", "target": "images/cnp/fb/3_gt.jpg", "garments": ["images/cnp/fb/3_top_f.png", "images/cnp/fb/3_top_b.png", null, null]}
+  ]
+ },
+ "repose": {
+  "ff": [
+   {"input": "images/repose/ff/1_input.jpg", "target": "images/repose/ff/1_gt.jpg", "garments": ["images/repose/ff/1_top_f.png", "images/repose/ff/1_top_b.png", "images/repose/ff/1_bot_f.png", "images/repose/ff/1_bot_b.png"]},
+   {"input": "images/repose/ff/2_input.jpg", "target": "images/repose/ff/2_gt.jpg", "garments": ["images/repose/ff/2_top_f.png", "images/repose/ff/2_top_b.png", null, null]},
+   {"input": "images/repose/ff/3_input.jpg", "target": "images/repose/ff/3_gt.jpg", "garments": ["images/repose/ff/3_top_f.png", "images/repose/ff/3_top_b.png", null, null]}
+  ],
+  "fl": [
+   {"input": "images/repose/fl/1_input.jpg", "target": "images/repose/fl/1_gt.jpg", "garments": ["images/repose/fl/1_top_f.png", "images/repose/fl/1_top_b.png", "images/repose/fl/1_bot_f.png", "images/repose/fl/1_bot_b.png"]},
+   {"input": "images/repose/fl/2_input.jpg", "target": "images/repose/fl/2_gt.jpg", "garments": ["images/repose/fl/2_top_f.png", "images/repose/fl/2_top_b.png", null, null]},
+   {"input": "images/repose/fl/3_input.jpg", "target": "images/repose/fl/3_gt.jpg", "garments": ["images/repose/fl/3_top_f.png", "images/repose/fl/3_top_b.png", null, null]}
+  ],
+  "fr": [
+   {"input": "images/repose/fr/1_input.jpg", "target": "images/repose/fr/1_gt.jpg", "garments": ["images/repose/fr/1_top_f.png", "images/repose/fr/1_top_b.png", "images/repose/fr/1_bot_f.png", "images/repose/fr/1_bot_b.png"]},
+   {"input": "images/repose/fr/2_input.jpg", "target": "images/repose/fr/2_gt.jpg", "garments": ["images/repose/fr/2_top_f.png", "images/repose/fr/2_top_b.png", null, null]},
+   {"input": "images/repose/fr/3_input.jpg", "target": "images/repose/fr/3_gt.jpg", "garments": ["images/repose/fr/3_top_f.png", "images/repose/fr/3_top_b.png", null, null]}
+  ],
+  "fb": [
+   {"input": "images/repose/fb/1_input.jpg", "target": "images/repose/fb/1_gt.jpg", "garments": ["images/repose/fb/1_top_f.png", "images/repose/fb/1_top_b.png", "images/repose/fb/1_bot_f.png", "images/repose/fb/1_bot_b.png"]},
+   {"input": "images/repose/fb/2_input.jpg", "target": "images/repose/fb/2_gt.jpg", "garments": ["images/repose/fb/2_top_f.png", "images/repose/fb/2_top_b.png", null, null]},
+   {"input": "images/repose/fb/3_input.jpg", "target": "images/repose/fb/3_gt.jpg", "garments": ["images/repose/fb/3_top_f.png", "images/repose/fb/3_top_b.png", null, null]}
+  ]
+ }
+};
+
+let galleryData = GALLERY_DATA;
+
+/* ── Render slide HTML ───────────────────────────────── */
+function renderSlide(sample, type) {
+  const garmentLabel = type === 'cnp'
+    ? 'Target Garment G<sub>B</sub>'
+    : 'Current Garment';
+  const targetLabel = type === 'cnp'
+    ? '<strong>Ground Truth</strong><br>wearing G<sub>B</sub>'
+    : '<strong>Ground Truth</strong><br>new pose, same garment';
+
+  /* Drop the bottom-garment cells entirely when this sample has no bottom
+     garment (one-piece / top-only outfit) — show only the top row. */
+  const hasBottom = !!(sample.garments[2] || sample.garments[3]);
+  const gItems = hasBottom
+    ? [[0,'Top Front'],[1,'Top Back'],[2,'Bottom Front'],[3,'Bottom Back']]
+    : [[0,'Top Front'],[1,'Top Back']];
+  const gridCells = gItems
+    .map(([i,a]) => `<div class="g-cell"><img src="${sample.garments[i] || PH_GARMENTS[i]}" alt="${a}" loading="lazy"></div>`)
+    .join('');
+  const subLabels = (hasBottom
+    ? ['Top F','Top B','Bot F','Bot B']
+    : ['Top F','Top B']).map(t => `<span>${t}</span>`).join('');
+
+  return `
+    <div class="triplet-slide">
+      <div class="triplet-card">
+        <div class="tc-col">
+          <div class="tc-img-wrap">
+            <img src="${sample.input}" alt="Input Person" loading="lazy">
+          </div>
+          <span class="tc-label"><strong>Input Person</strong><br>wearing G<sub>A</sub></span>
+        </div>
+        <div class="tc-col">
+          <div class="garment-grid${hasBottom ? '' : ' no-bottom'}">
+            ${gridCells}
+          </div>
+          <div class="garment-sublabels${hasBottom ? '' : ' no-bottom'}">
+            ${subLabels}
+          </div>
+          <span class="tc-label">${garmentLabel}</span>
+        </div>
+        <div class="tc-col">
+          <div class="tc-img-wrap">
+            <img src="${sample.target}" alt="Ground Truth" loading="lazy">
+          </div>
+          <span class="tc-label">${targetLabel}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ── Init all galleries ──────────────────────────────── */
+const slideState = {};
+
+function initGallery(gallery, type) {
+  ['ff', 'fl', 'fr', 'fb'].forEach(config => {
+    const panelId = `${gallery}-${config}`;
+    const track   = document.getElementById(`${panelId}-track`);
+    const samples  = (galleryData[gallery] && galleryData[gallery][config]) || [];
+
+    track.innerHTML = '';
+    track.style.transform = 'translateX(0)';
+    samples.forEach(s => track.insertAdjacentHTML('beforeend', renderSlide(s, type)));
+    slideState[panelId] = { pos: 0, total: samples.length };
+    updateCounter(panelId);
+  });
+}
+
+function initAllGalleries() {
+  initGallery('cnp',    'cnp');
+  initGallery('repose', 'repose');
+}
+
+/* Data is inlined above (GALLERY_DATA) — just render on load, no fetch needed. */
+document.addEventListener('DOMContentLoaded', initAllGalleries);
+
+/* ── Navigation ──────────────────────────────────────── */
+function navSlide(panelId, dir) {
+  const s = slideState[panelId];
+  s.pos = (s.pos + dir + s.total) % s.total;
+  document.getElementById(`${panelId}-track`).style.transform =
+    `translateX(-${s.pos * 100}%)`;
+  updateCounter(panelId);
+}
+
+function updateCounter(panelId) {
+  const s = slideState[panelId];
+  const el = document.getElementById(`${panelId}-ctr`);
+  if (el) el.textContent = `${s.pos + 1} / ${s.total}`;
+}
+
+/* ── Tab switching ───────────────────────────────────── */
+function switchTab(gallery, config, btn) {
+  /* find parent section: try ${gallery}-gallery first, then ${gallery}s, then ${gallery} */
+  const section = document.getElementById(`${gallery}-gallery`)
+    || document.getElementById(`${gallery}s`)
+    || document.getElementById(gallery);
+  section.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  section.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`${gallery}-${config}`).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ── Copy BibTeX ─────────────────────────────────────── */
+function copyBibtex() {
+  const text = document.getElementById('bibtex').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+</script>
+  </main>
+</body>
+</html>

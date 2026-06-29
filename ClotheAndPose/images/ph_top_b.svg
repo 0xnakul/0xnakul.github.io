@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">
+  <rect width="200" height="300" fill="#ebebeb"/>
+  <path d="M60,60 L30,90 L55,100 L55,200 L145,200 L145,100 L170,90 L140,60 Q120,45 100,45 Q80,45 60,60Z" fill="none" stroke="#c5c5c5" stroke-width="2"/>
+  <text x="100" y="230" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10" fill="#bbb">Top</text>
+  <text x="100" y="245" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="10" fill="#bbb">Back</text>
+</svg>
