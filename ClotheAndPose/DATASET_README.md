@@ -97,10 +97,11 @@ Two families, each with four pose-orientation splits. **`f2{b,f,l,r}` = front-to
 {back, front, left, right}** (the orientation of the *target* pose relative to a frontal
 source). 600 items per split.
 
-- **`multipose_tryon`** — source and target are different poses of the **same**
-  photoshoot; the task is to render the outfit on the person in the target pose.
-- **`pose_transfer`** — source and target are **different** photoshoots; the task is to
-  transfer a person into a new pose.
+- **`multipose_tryon`** — source and target are **different** photoshoots of the **same
+  person** wearing a **different outfit**; the task is to render the target garment on the
+  person in the target pose (clothes *and* pose change together).
+- **`pose_transfer`** — source and target are different poses of the **same** photoshoot
+  (same outfit); the task is to transfer the person into the target pose (pose only).
 
 ### Item schema (`benchmarks/<family>/<split>.jsonl`, one JSON object per line)
 ```json
@@ -108,7 +109,7 @@ source). 600 items per split.
   "benchmark": "multipose_tryon",
   "split": "f2b",
   "source": {"photoshoot": "c3_1001_02", "pose": "pose_005"},
-  "target": {"photoshoot": "c3_1001_02", "pose": "pose_012"},
+  "target": {"photoshoot": "c3_1001_09", "pose": "pose_012"},
   "garments": {
     "top":    {"class": "top",    "front": "garments/<sha>.png", "back": "garments/<sha>.png"},
     "bottom": {"class": "bottom", "front": "garments/<sha>.png", "back": "garments/<sha>.png"}

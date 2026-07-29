@@ -206,6 +206,37 @@
       .montage-strip { max-width: 100%; }
     }
 
+    /* ── Single-row scrollable strips (individual cutouts) ─ */
+    .gallery-strip {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 22px 2px 18px;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+    }
+    .gallery-strip img {
+      flex: 0 0 auto;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      border-radius: 8px;
+      scroll-snap-align: start;
+    }
+    #garment-montages .gallery-strip img {
+      height: 230px;
+      width: 230px;
+      background: #fff;
+    }
+    #human-montages .gallery-strip img {
+      height: 320px;
+      background: #fff;
+    }
+    .gallery-strip::-webkit-scrollbar { height: 8px; }
+    .gallery-strip::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+    .gallery-strip::-webkit-scrollbar-track { background: #f5f5f5; }
+
     /* ── Gallery: tabs ──────────────────────────────────── */
     .gallery-tabs {
       display: flex;
@@ -269,13 +300,13 @@
       width: 100%;
       aspect-ratio: 2/3;
       overflow: hidden;
-      background: #f0f0f0;
+      background: #fff;
       border: 1px solid #e8e8e8;
     }
     .tc-img-wrap img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
     }
     .garment-grid {
@@ -292,19 +323,19 @@
       grid-template-rows: 1fr;
     }
     .garment-grid .g-cell {
+      position: relative;
       overflow: hidden;
       background: #fafafa;
       border: 1px solid #e8e8e8;
       min-height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
     .garment-grid .g-cell img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: contain;
-      padding: 5px;
+      padding: 1px;
       display: block;
     }
     .garment-sublabels {
@@ -445,7 +476,6 @@
   <div class="header-meta">
     <p class="authors"><a href="https://0xnakul.github.io">Nakul Sharma</a> &nbsp;·&nbsp; <a href="https://aayushbansal.xyz/">Aayush Bansal</a> &nbsp;·&nbsp; <a href="https://minhpvo.github.io/">Minh Vo</a></p>
     <div class="header-links">
-      <a href="#">Paper</a>
       <a href="#access">Dataset</a>
       <a href="#citation">BibTeX</a>
     </div>
@@ -545,10 +575,11 @@
 </section>
 
 
-<!-- ═══════════════ GARMENT MONTAGES ══════════════════════ -->
+<!-- ═══════════════ GARMENT MONTAGES (hidden per request) ══════════════════════ -->
+<!--
 <section id="garment-montages">
   <h2>Garments at a Glance</h2>
-  <p>Browse a randomized collage of garments from each category.</p>
+  <p>Scroll through individual garments from each category.</p>
 
   <div class="gallery-tabs" id="garment-montage-tabs">
     <button class="tab-btn active" onclick="switchTab('garment-montage', 'long-sleeve', this)">Long Sleeve</button>
@@ -563,39 +594,40 @@
   </div>
 
   <div class="tab-panel active" id="garment-montage-long-sleeve">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_lslv.webp" alt="Long-sleeve top cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/long-sleeve"></div>
   </div>
   <div class="tab-panel" id="garment-montage-short-sleeve">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_sslv.webp" alt="Short-sleeve top cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/short-sleeve"></div>
   </div>
   <div class="tab-panel" id="garment-montage-sleeveless">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_slvls.webp" alt="Sleeveless top cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/sleeveless"></div>
   </div>
   <div class="tab-panel" id="garment-montage-dress">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_dress.webp" alt="Dress cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/dress"></div>
   </div>
   <div class="tab-panel" id="garment-montage-innerwear-top">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_innerwear_top.webp" alt="Innerwear top cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/innerwear-top"></div>
   </div>
   <div class="tab-panel" id="garment-montage-innerwear-bot">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_innerwear_bottom.webp" alt="Innerwear bottom cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/innerwear-bot"></div>
   </div>
   <div class="tab-panel" id="garment-montage-swimwear">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_swimwear.webp" alt="Swimwear cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/swimwear"></div>
   </div>
   <div class="tab-panel" id="garment-montage-skirt">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_skirts.webp" alt="Skirt cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/skirt"></div>
   </div>
   <div class="tab-panel" id="garment-montage-pants">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/garments_pants.webp" alt="Pants cutouts from the dataset" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="garments/pants"></div>
   </div>
 </section>
+-->
 
 
 <!-- ═══════════════ HUMAN MONTAGES ═══════════════════════ -->
 <section id="human-montages">
   <h2>Humans at a Glance</h2>
-  <p>Randomized collages of human subjects across the four pose orientations.</p>
+  <p>Scroll through individual human subjects across the four pose orientations.</p>
 
   <div class="gallery-tabs" id="human-montage-tabs">
     <button class="tab-btn active" onclick="switchTab('human-montage', 'front', this)">Front</button>
@@ -605,16 +637,16 @@
   </div>
 
   <div class="tab-panel active" id="human-montage-front">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/humans_front.webp" alt="Human subjects in front-facing poses" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="humans/front"></div>
   </div>
   <div class="tab-panel" id="human-montage-left">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/humans_left.webp" alt="Human subjects in left-facing poses" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="humans/left"></div>
   </div>
   <div class="tab-panel" id="human-montage-right">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/humans_right.webp" alt="Human subjects in right-facing poses" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="humans/right"></div>
   </div>
   <div class="tab-panel" id="human-montage-back">
-    <div class="montage-scroll"><img class="montage-strip" src="images/montages/humans_back.webp" alt="Human subjects in back-facing poses" loading="lazy" decoding="async"></div>
+    <div class="gallery-strip" data-strip="humans/back"></div>
   </div>
 </section>
 
@@ -745,33 +777,6 @@
 </section>
 
 
-<!-- ══════════════════ METRICS ═══════════════════════════ -->
-<section id="metrics">
-  <h2>Evaluation Metrics</h2>
-  <p>
-    Because our dataset provides <em>real</em> ground truth images, we can apply
-    full-reference metrics that are unavailable in existing VTON benchmarks.
-  </p>
-  <div class="metrics-grid">
-    <div class="metric-card">
-      <div class="metric-name">LPIPS</div>
-      <div class="metric-dir">Lower is better</div>
-      <p>Learned Perceptual Image Patch Similarity. Measures perceptual similarity using deep features; correlates better with human judgement than pixel metrics.</p>
-    </div>
-    <div class="metric-card">
-      <div class="metric-name">PSNR</div>
-      <div class="metric-dir">Higher is better</div>
-      <p>Peak Signal-to-Noise Ratio. A pixel-level fidelity measure. Provides a complementary signal to perceptual metrics.</p>
-    </div>
-    <div class="metric-card">
-      <div class="metric-name">SSIM</div>
-      <div class="metric-dir">Higher is better</div>
-      <p>Structural Similarity Index. Captures luminance, contrast, and structure differences between generated and ground truth images.</p>
-    </div>
-  </div>
-</section>
-
-
 <!-- ════════════════════ ACCESS ══════════════════════════ -->
 <section id="access">
   <h2>How to Access</h2>
@@ -797,16 +802,34 @@
 </section>
 
 
+<!-- ════════════════════ PAPER ═══════════════════════════ -->
+<section id="paper">
+  <h2>Paper</h2>
+  <div class="access-box">
+    <p>
+      Our paper describing the Clothe and Pose benchmark — dataset construction,
+      evaluation protocol, and experiments — is available below.
+    </p>
+    <p>
+      <a href="#">Read the paper (PDF)</a>
+    </p>
+    <p class="access-note">
+      Link will be updated upon release.
+    </p>
+  </div>
+</section>
+
+
 <!-- ═══════════════════ CITATION ═════════════════════════ -->
 <section id="citation">
   <h2>Citation</h2>
   <div class="citation-wrap">
     <!-- TODO: update booktitle to CVPR proceedings once acceptance is confirmed; currently a neutral preprint citation -->
-    <pre class="citation-block" id="bibtex">@InProceedings{sharma2025clothepose,
+    <pre class="citation-block" id="bibtex">@InProceedings{sharma2026clothepose,
   title     = {Clothe and Pose},
   author    = {Sharma, Nakul and Bansal, Aayush and Vo, Minh},
   booktitle = {CVPR},
-  year      = {2025}
+  year      = {2026}
 }</pre>
     <button class="copy-btn" onclick="copyBibtex()">Copy</button>
   </div>
@@ -814,7 +837,7 @@
 
 
 <footer>
-  Clothe and Pose Benchmark &nbsp;·&nbsp; 2025
+  Clothe and Pose Benchmark &nbsp;·&nbsp; 2026
 </footer>
 
 
@@ -883,46 +906,342 @@ const fallbackData = {
 const GALLERY_DATA = {
  "cnp": {
   "ff": [
-   {"input": "images/cnp/ff/1_input.jpg", "target": "images/cnp/ff/1_gt.jpg", "garments": ["images/cnp/ff/1_top_f.png", "images/cnp/ff/1_top_b.png", "images/cnp/ff/1_bot_f.png", "images/cnp/ff/1_bot_b.png"]},
-   {"input": "images/cnp/ff/2_input.jpg", "target": "images/cnp/ff/2_gt.jpg", "garments": ["images/cnp/ff/2_top_f.png", "images/cnp/ff/2_top_b.png", "images/cnp/ff/2_bot_f.png", "images/cnp/ff/2_bot_b.png"]},
-   {"input": "images/cnp/ff/3_input.jpg", "target": "images/cnp/ff/3_gt.jpg", "garments": ["images/cnp/ff/3_top_f.png", "images/cnp/ff/3_top_b.png", "images/cnp/ff/3_bot_f.png", "images/cnp/ff/3_bot_b.png"]}
+   {
+    "input": "images/cnp/ff/1_input.webp",
+    "target": "images/cnp/ff/1_gt.webp",
+    "garments": [
+     "images/cnp/ff/1_top_f.webp",
+     "images/cnp/ff/1_top_b.webp",
+     "images/cnp/ff/1_bot_f.webp",
+     "images/cnp/ff/1_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/ff/2_input.webp",
+    "target": "images/cnp/ff/2_gt.webp",
+    "garments": [
+     "images/cnp/ff/2_top_f.webp",
+     "images/cnp/ff/2_top_b.webp",
+     null,
+     null
+    ]
+   },
+   {
+    "input": "images/cnp/ff/3_input.webp",
+    "target": "images/cnp/ff/3_gt.webp",
+    "garments": [
+     "images/cnp/ff/3_top_f.webp",
+     "images/cnp/ff/3_top_b.webp",
+     null,
+     null
+    ]
+   },
+   {
+    "input": "images/cnp/ff/4_input.webp",
+    "target": "images/cnp/ff/4_gt.webp",
+    "garments": [
+     "images/cnp/ff/4_top_f.webp",
+     "images/cnp/ff/4_top_b.webp",
+     "images/cnp/ff/4_bot_f.webp",
+     "images/cnp/ff/4_bot_b.webp"
+    ]
+   }
   ],
   "fl": [
-   {"input": "images/cnp/fl/1_input.jpg", "target": "images/cnp/fl/1_gt.jpg", "garments": ["images/cnp/fl/1_top_f.png", "images/cnp/fl/1_top_b.png", "images/cnp/fl/1_bot_f.png", "images/cnp/fl/1_bot_b.png"]},
-   {"input": "images/cnp/fl/2_input.jpg", "target": "images/cnp/fl/2_gt.jpg", "garments": ["images/cnp/fl/2_top_f.png", "images/cnp/fl/2_top_b.png", null, null]},
-   {"input": "images/cnp/fl/3_input.jpg", "target": "images/cnp/fl/3_gt.jpg", "garments": ["images/cnp/fl/3_top_f.png", "images/cnp/fl/3_top_b.png", null, null]}
+   {
+    "input": "images/cnp/fl/1_input.webp",
+    "target": "images/cnp/fl/1_gt.webp",
+    "garments": [
+     "images/cnp/fl/1_top_f.webp",
+     "images/cnp/fl/1_top_b.webp",
+     "images/cnp/fl/1_bot_f.webp",
+     "images/cnp/fl/1_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fl/2_input.webp",
+    "target": "images/cnp/fl/2_gt.webp",
+    "garments": [
+     "images/cnp/fl/2_top_f.webp",
+     "images/cnp/fl/2_top_b.webp",
+     "images/cnp/fl/2_bot_f.webp",
+     "images/cnp/fl/2_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fl/3_input.webp",
+    "target": "images/cnp/fl/3_gt.webp",
+    "garments": [
+     "images/cnp/fl/3_top_f.webp",
+     "images/cnp/fl/3_top_b.webp",
+     "images/cnp/fl/3_bot_f.webp",
+     "images/cnp/fl/3_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fl/4_input.webp",
+    "target": "images/cnp/fl/4_gt.webp",
+    "garments": [
+     "images/cnp/fl/4_top_f.webp",
+     "images/cnp/fl/4_top_b.webp",
+     "images/cnp/fl/4_bot_f.webp",
+     "images/cnp/fl/4_bot_b.webp"
+    ]
+   }
   ],
   "fr": [
-   {"input": "images/cnp/fr/1_input.jpg", "target": "images/cnp/fr/1_gt.jpg", "garments": ["images/cnp/fr/1_top_f.png", "images/cnp/fr/1_top_b.png", "images/cnp/fr/1_bot_f.png", "images/cnp/fr/1_bot_b.png"]},
-   {"input": "images/cnp/fr/2_input.jpg", "target": "images/cnp/fr/2_gt.jpg", "garments": ["images/cnp/fr/2_top_f.png", "images/cnp/fr/2_top_b.png", null, null]},
-   {"input": "images/cnp/fr/3_input.jpg", "target": "images/cnp/fr/3_gt.jpg", "garments": ["images/cnp/fr/3_top_f.png", "images/cnp/fr/3_top_b.png", null, null]}
+   {
+    "input": "images/cnp/fr/1_input.webp",
+    "target": "images/cnp/fr/1_gt.webp",
+    "garments": [
+     "images/cnp/fr/1_top_f.webp",
+     "images/cnp/fr/1_top_b.webp",
+     "images/cnp/fr/1_bot_f.webp",
+     "images/cnp/fr/1_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fr/2_input.webp",
+    "target": "images/cnp/fr/2_gt.webp",
+    "garments": [
+     "images/cnp/fr/2_top_f.webp",
+     "images/cnp/fr/2_top_b.webp",
+     "images/cnp/fr/2_bot_f.webp",
+     "images/cnp/fr/2_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fr/3_input.webp",
+    "target": "images/cnp/fr/3_gt.webp",
+    "garments": [
+     "images/cnp/fr/3_top_f.webp",
+     "images/cnp/fr/3_top_b.webp",
+     "images/cnp/fr/3_bot_f.webp",
+     "images/cnp/fr/3_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fr/4_input.webp",
+    "target": "images/cnp/fr/4_gt.webp",
+    "garments": [
+     "images/cnp/fr/4_top_f.webp",
+     "images/cnp/fr/4_top_b.webp",
+     "images/cnp/fr/4_bot_f.webp",
+     "images/cnp/fr/4_bot_b.webp"
+    ]
+   }
   ],
   "fb": [
-   {"input": "images/cnp/fb/1_input.jpg", "target": "images/cnp/fb/1_gt.jpg", "garments": ["images/cnp/fb/1_top_f.png", "images/cnp/fb/1_top_b.png", "images/cnp/fb/1_bot_f.png", "images/cnp/fb/1_bot_b.png"]},
-   {"input": "images/cnp/fb/2_input.jpg", "target": "images/cnp/fb/2_gt.jpg", "garments": ["images/cnp/fb/2_top_f.png", "images/cnp/fb/2_top_b.png", "images/cnp/fb/2_bot_f.png", "images/cnp/fb/2_bot_b.png"]},
-   {"input": "images/cnp/fb/3_input.jpg", "target": "images/cnp/fb/3_gt.jpg", "garments": ["images/cnp/fb/3_top_f.png", "images/cnp/fb/3_top_b.png", null, null]}
+   {
+    "input": "images/cnp/fb/1_input.webp",
+    "target": "images/cnp/fb/1_gt.webp",
+    "garments": [
+     "images/cnp/fb/1_top_f.webp",
+     "images/cnp/fb/1_top_b.webp",
+     "images/cnp/fb/1_bot_f.webp",
+     "images/cnp/fb/1_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fb/2_input.webp",
+    "target": "images/cnp/fb/2_gt.webp",
+    "garments": [
+     "images/cnp/fb/2_top_f.webp",
+     "images/cnp/fb/2_top_b.webp",
+     "images/cnp/fb/2_bot_f.webp",
+     "images/cnp/fb/2_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fb/3_input.webp",
+    "target": "images/cnp/fb/3_gt.webp",
+    "garments": [
+     "images/cnp/fb/3_top_f.webp",
+     "images/cnp/fb/3_top_b.webp",
+     "images/cnp/fb/3_bot_f.webp",
+     "images/cnp/fb/3_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/cnp/fb/4_input.webp",
+    "target": "images/cnp/fb/4_gt.webp",
+    "garments": [
+     "images/cnp/fb/4_top_f.webp",
+     "images/cnp/fb/4_top_b.webp",
+     "images/cnp/fb/4_bot_f.webp",
+     "images/cnp/fb/4_bot_b.webp"
+    ]
+   }
   ]
  },
  "repose": {
   "ff": [
-   {"input": "images/repose/ff/1_input.jpg", "target": "images/repose/ff/1_gt.jpg", "garments": ["images/repose/ff/1_top_f.png", "images/repose/ff/1_top_b.png", "images/repose/ff/1_bot_f.png", "images/repose/ff/1_bot_b.png"]},
-   {"input": "images/repose/ff/2_input.jpg", "target": "images/repose/ff/2_gt.jpg", "garments": ["images/repose/ff/2_top_f.png", "images/repose/ff/2_top_b.png", null, null]},
-   {"input": "images/repose/ff/3_input.jpg", "target": "images/repose/ff/3_gt.jpg", "garments": ["images/repose/ff/3_top_f.png", "images/repose/ff/3_top_b.png", null, null]}
+   {
+    "input": "images/repose/ff/1_input.webp",
+    "target": "images/repose/ff/1_gt.webp",
+    "garments": [
+     "images/repose/ff/1_top_f.webp",
+     "images/repose/ff/1_top_b.webp",
+     "images/repose/ff/1_bot_f.webp",
+     "images/repose/ff/1_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/repose/ff/2_input.webp",
+    "target": "images/repose/ff/2_gt.webp",
+    "garments": [
+     "images/repose/ff/2_top_f.webp",
+     "images/repose/ff/2_top_b.webp",
+     "images/repose/ff/2_bot_f.webp",
+     "images/repose/ff/2_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/repose/ff/3_input.webp",
+    "target": "images/repose/ff/3_gt.webp",
+    "garments": [
+     "images/repose/ff/3_top_f.webp",
+     "images/repose/ff/3_top_b.webp",
+     "images/repose/ff/3_bot_f.webp",
+     "images/repose/ff/3_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/repose/ff/4_input.webp",
+    "target": "images/repose/ff/4_gt.webp",
+    "garments": [
+     "images/repose/ff/4_top_f.webp",
+     "images/repose/ff/4_top_b.webp",
+     "images/repose/ff/4_bot_f.webp",
+     "images/repose/ff/4_bot_b.webp"
+    ]
+   }
   ],
   "fl": [
-   {"input": "images/repose/fl/1_input.jpg", "target": "images/repose/fl/1_gt.jpg", "garments": ["images/repose/fl/1_top_f.png", "images/repose/fl/1_top_b.png", "images/repose/fl/1_bot_f.png", "images/repose/fl/1_bot_b.png"]},
-   {"input": "images/repose/fl/2_input.jpg", "target": "images/repose/fl/2_gt.jpg", "garments": ["images/repose/fl/2_top_f.png", "images/repose/fl/2_top_b.png", null, null]},
-   {"input": "images/repose/fl/3_input.jpg", "target": "images/repose/fl/3_gt.jpg", "garments": ["images/repose/fl/3_top_f.png", "images/repose/fl/3_top_b.png", null, null]}
+   {
+    "input": "images/repose/fl/1_input.webp",
+    "target": "images/repose/fl/1_gt.webp",
+    "garments": [
+     "images/repose/fl/1_top_f.webp",
+     "images/repose/fl/1_top_b.webp",
+     "images/repose/fl/1_bot_f.webp",
+     "images/repose/fl/1_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/repose/fl/2_input.webp",
+    "target": "images/repose/fl/2_gt.webp",
+    "garments": [
+     "images/repose/fl/2_top_f.webp",
+     "images/repose/fl/2_top_b.webp",
+     null,
+     null
+    ]
+   },
+   {
+    "input": "images/repose/fl/3_input.webp",
+    "target": "images/repose/fl/3_gt.webp",
+    "garments": [
+     "images/repose/fl/3_top_f.webp",
+     "images/repose/fl/3_top_b.webp",
+     null,
+     null
+    ]
+   },
+   {
+    "input": "images/repose/fl/4_input.webp",
+    "target": "images/repose/fl/4_gt.webp",
+    "garments": [
+     "images/repose/fl/4_top_f.webp",
+     "images/repose/fl/4_top_b.webp",
+     null,
+     null
+    ]
+   }
   ],
   "fr": [
-   {"input": "images/repose/fr/1_input.jpg", "target": "images/repose/fr/1_gt.jpg", "garments": ["images/repose/fr/1_top_f.png", "images/repose/fr/1_top_b.png", "images/repose/fr/1_bot_f.png", "images/repose/fr/1_bot_b.png"]},
-   {"input": "images/repose/fr/2_input.jpg", "target": "images/repose/fr/2_gt.jpg", "garments": ["images/repose/fr/2_top_f.png", "images/repose/fr/2_top_b.png", null, null]},
-   {"input": "images/repose/fr/3_input.jpg", "target": "images/repose/fr/3_gt.jpg", "garments": ["images/repose/fr/3_top_f.png", "images/repose/fr/3_top_b.png", null, null]}
+   {
+    "input": "images/repose/fr/1_input.webp",
+    "target": "images/repose/fr/1_gt.webp",
+    "garments": [
+     "images/repose/fr/1_top_f.webp",
+     "images/repose/fr/1_top_b.webp",
+     "images/repose/fr/1_bot_f.webp",
+     "images/repose/fr/1_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/repose/fr/2_input.webp",
+    "target": "images/repose/fr/2_gt.webp",
+    "garments": [
+     "images/repose/fr/2_top_f.webp",
+     "images/repose/fr/2_top_b.webp",
+     "images/repose/fr/2_bot_f.webp",
+     "images/repose/fr/2_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/repose/fr/3_input.webp",
+    "target": "images/repose/fr/3_gt.webp",
+    "garments": [
+     "images/repose/fr/3_top_f.webp",
+     "images/repose/fr/3_top_b.webp",
+     null,
+     null
+    ]
+   },
+   {
+    "input": "images/repose/fr/4_input.webp",
+    "target": "images/repose/fr/4_gt.webp",
+    "garments": [
+     "images/repose/fr/4_top_f.webp",
+     "images/repose/fr/4_top_b.webp",
+     null,
+     null
+    ]
+   }
   ],
   "fb": [
-   {"input": "images/repose/fb/1_input.jpg", "target": "images/repose/fb/1_gt.jpg", "garments": ["images/repose/fb/1_top_f.png", "images/repose/fb/1_top_b.png", "images/repose/fb/1_bot_f.png", "images/repose/fb/1_bot_b.png"]},
-   {"input": "images/repose/fb/2_input.jpg", "target": "images/repose/fb/2_gt.jpg", "garments": ["images/repose/fb/2_top_f.png", "images/repose/fb/2_top_b.png", null, null]},
-   {"input": "images/repose/fb/3_input.jpg", "target": "images/repose/fb/3_gt.jpg", "garments": ["images/repose/fb/3_top_f.png", "images/repose/fb/3_top_b.png", null, null]}
+   {
+    "input": "images/repose/fb/1_input.webp",
+    "target": "images/repose/fb/1_gt.webp",
+    "garments": [
+     "images/repose/fb/1_top_f.webp",
+     "images/repose/fb/1_top_b.webp",
+     "images/repose/fb/1_bot_f.webp",
+     "images/repose/fb/1_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/repose/fb/2_input.webp",
+    "target": "images/repose/fb/2_gt.webp",
+    "garments": [
+     "images/repose/fb/2_top_f.webp",
+     "images/repose/fb/2_top_b.webp",
+     "images/repose/fb/2_bot_f.webp",
+     "images/repose/fb/2_bot_b.webp"
+    ]
+   },
+   {
+    "input": "images/repose/fb/3_input.webp",
+    "target": "images/repose/fb/3_gt.webp",
+    "garments": [
+     "images/repose/fb/3_top_f.webp",
+     "images/repose/fb/3_top_b.webp",
+     null,
+     null
+    ]
+   },
+   {
+    "input": "images/repose/fb/4_input.webp",
+    "target": "images/repose/fb/4_gt.webp",
+    "garments": [
+     "images/repose/fb/4_top_f.webp",
+     "images/repose/fb/4_top_b.webp",
+     "images/repose/fb/4_bot_f.webp",
+     "images/repose/fb/4_bot_b.webp"
+    ]
+   }
   ]
  }
 };
@@ -1003,6 +1322,27 @@ function initAllGalleries() {
 
 /* Data is inlined above (GALLERY_DATA) — just render on load, no fetch needed. */
 document.addEventListener('DOMContentLoaded', initAllGalleries);
+
+/* ── Montage strips: single-row scrollable individual cutouts ──
+   Images live at images/gallery/<kind>/<key>/<i>.webp, 0-indexed.
+   To regenerate the assets, re-run the downscale script over
+   /home/eval_webpage/montage/{garments_resized,humans_transparent_resized}. */
+const STRIP_COUNTS = {
+  garments: {"long-sleeve":16,"short-sleeve":16,"sleeveless":16,"dress":16,"innerwear-top":16,"innerwear-bot":16,"swimwear":16,"skirt":16,"pants":6},
+  humans:   {"front":18,"left":17,"right":17,"back":17},
+};
+function initStrips() {
+  document.querySelectorAll('.gallery-strip').forEach(el => {
+    const [kind, key] = (el.dataset.strip || '').split('/');
+    const n = (STRIP_COUNTS[kind] && STRIP_COUNTS[kind][key]) || 0;
+    let html = '';
+    for (let i = 0; i < n; i++) {
+      html += `<img src="images/gallery/${kind}/${key}/${i}.webp" alt="" loading="lazy" decoding="async">`;
+    }
+    el.innerHTML = html;
+  });
+}
+document.addEventListener('DOMContentLoaded', initStrips);
 
 /* ── Navigation ──────────────────────────────────────── */
 function navSlide(panelId, dir) {
