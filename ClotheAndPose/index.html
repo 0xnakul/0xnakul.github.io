@@ -468,7 +468,7 @@
     }
   </style>
 </head>
-<body data-new-gr-c-s-check-loaded="14.1305.0" data-gr-ext-installed="">
+<body>
 
 <!-- ═══════════════════════ HEADER ═══════════════════════ -->
 <header>
@@ -548,7 +548,7 @@
 
   <div class="stats-row">
     <div class="stat-item">
-      <span class="stat-num">8</span>
+      <span class="stat-num">9</span>
       <span class="stat-label">Garment categories</span>
     </div>
     <div class="stat-item">
@@ -863,7 +863,6 @@ garments.forEach(g => {
   Each sample has shape:
     { input: str, target: str, garments: [topF, topB, botF, botB] }
   where any garment entry may be null (rendered with an SVG fallback).
-  To regenerate the data + images: python3 build_triplets.py
 */
 /* SVG placeholders retained only as graceful fallbacks when a real
    image is missing (e.g. a null garment cell or a failed fetch). */
@@ -891,8 +890,7 @@ const fallbackData = {
 };
 
 /* Triplet data, inlined so the page is fully static (no fetch / no server
-   needed — works from file:// or any static host like GitHub Pages).
-   To regenerate: run build_triplets.py and paste its gallery_data.json here. */
+   needed — works from file:// or any static host like GitHub Pages). */
 const GALLERY_DATA = {
  "cnp": {
   "ff": [
@@ -1371,6 +1369,5 @@ function copyBibtex() {
   });
 }
 </script>
-  </main>
 </body>
 </html>

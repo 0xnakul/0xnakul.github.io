@@ -45,7 +45,7 @@ The dataset ships in two co-keyed tiers (same `photoshoot` and garment ids in bo
 │           ├── pose_000.png     # canonical body images (the person, one per pose)
 │           └── pose_001.png ...
 ├── garments/
-│   └── <sha256>.png             # content-addressed garment catalog (RGBA), 769 unique
+│   └── <sha256>.png             # content-addressed garment catalog (RGBA); 360 unique garments (769 front/back view PNGs)
 ├── benchmarks/
 │   ├── multipose_tryon/{f2b,f2f,f2l,f2r}.jsonl
 │   └── pose_transfer/{f2b,f2f,f2l,f2r}.jsonl
