@@ -483,22 +483,15 @@
 </header>
 
 
-<!-- ═══════════════════════ WHY ══════════════════════════ -->
-<section id="why">
-  <h2>Why a New Benchmark?</h2>
+<!-- ═══════════════════ EVALUATION TRIPLET ═══════════════ -->
+<section id="triplet">
+  <h2>Evaluation Triplet</h2>
   <p>
-    Existing virtual try-on benchmarks evaluate models by masking the garment region
-    on a person already wearing that garment, and asking the model to reconstruct it.
-    This induces an <em>input dependency bias</em> — models learn to copy appearance
-    from the reference image rather than the provided garment. No benchmark supports
-    evaluating the practical scenario where the person wears a <em>different</em> garment,
-    or adopts a different <em>pose</em>.
+    Unlike existing try-on benchmarks that mask and reconstruct the <em>same</em> garment —
+    rewarding copying over real transfer — every entry here is a triplet of
+    (input person, target garment, ground truth), where the same person <em>physically</em>
+    wears G<sub>B</sub> at a new pose.
   </p>
-
-  <img src="images/fig3_cnp_ab.png" style="width:60%; margin: 24px auto; display:block;">
-
-  <h3>Evaluation Triplet</h3>
-  <p>Each entry in our dataset is a triplet of (input person, target garment images, ground truth). The same person physically wears G<sub>B</sub> at a target pose to produce the ground truth — no synthetic compositing.</p>
 
   <img src="images/fig3_cnp_c.png" style="width:30%; margin: 0 auto; display:block;">
 </section>
